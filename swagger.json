@@ -1,0 +1,684 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "MilkyLifePro API docs",
+    "description": "API documentation for MilkyLifePro. [Backend github repository](https://github.com/AnnaSobchenko/milkylifepro-rest-api)"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "https://milkylifepro-rest-api.herokuapp.com/" }],
+  "tags": [
+    {
+      "name": "User",
+      "description": "User's endpoints"
+    },
+    {
+      "name": "Prices",
+      "description": "Services and prices"
+    },
+    {
+      "name": "Reviews",
+      "description": "Reviews clients"
+    }
+  ],
+  "paths": {
+    "/api/users/signup": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authentication's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Email doesn't exist / Password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Current user",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/refresh": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Refresh Token",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "tags": ["User"],
+        "summary": "All users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "user's id"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/prices/": {
+      "get": {
+        "tags": ["Prices"],
+        "summary": "get prices",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PricesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/reviews/": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "get reviews",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/reviews/newreview": {
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "add review",
+        "parameters": [],
+        "requestBody": {
+          "description": "New review",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/reviews/isapprove/{reviewId}": {
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "set approve from admin for review",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reviewId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "review's id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApproveResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/reviews/{reviewDelId}": {
+      "delete": {
+        "tags": ["Reviews"],
+        "summary": "Delete review by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reviewDelId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "review's id"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "required": ["name", "email", "password"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "user1"
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone number",
+            "example": "+3801111111"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user1@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "user123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "user1"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user123@mail.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone number",
+            "example": "+3801111111"
+          },
+          "verificationToken": {
+            "type": "string",
+            "description": "User's token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjliNmEzMmUzM2Q1YzBjM2Y0MjNhY2UiLCJpYXQiOjE2NTQ2NzA4MjIsImV4cCI6MTY1NDY3NDQyMn0.qYMcQgrq_gg19rttwCHXLT2NHr0wJAjjYmWPMZXy1fw"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user1@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "user123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "user1"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email",
+                "example": "user123@mail.com"
+              },
+              "phone": {
+                "type": "string",
+                "description": "User's phone number",
+                "example": "+3801111111"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjliNmEzMmUzM2Q1YzBjM2Y0MjNhY2UiLCJpYXQiOjE2NTQ2NzA4MjIsImV4cCI6MTY1NDY3NDQyMn0.qYMcQgrq_gg19rttwCHXLT2NHr0wJAjjYmWPMZXy1fw"
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user123@mail.com"
+          }
+        }
+      },
+      "RefreshTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjliNmEzMmUzM2Q1YzBjM2Y0MjNhY2UiLCJpYXQiOjE2NTQ2NzA4MjIsImV4cCI6MTY1NDY3NDQyMn0.qYMcQgrq_gg19rttwCHXLT2NHr0wJAjjYmWPMZXy1fw"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refreshToken",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjliNzY1MGQ5NWJjOWQ5ZDdjNGRkZjgiLCJpYXQiOjE2NTQzNTU3MTIsImV4cCI6MTY1NDM1OTMxMn0.RWeRPi75Hl0kqsyPMEMbEBzXlu8jIVtXDXG84PijOJM"
+          }
+        }
+      },
+      "UsersResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "User's name",
+              "example": "user123"
+            },
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email",
+              "example": "user1@mail.com"
+            },
+            "_id": {
+              "type": "string",
+              "description": "User's id",
+              "example": "62d3d81095e900dbef3aa00c"
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "user123"
+                  },
+                  "number": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "2828282882"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "User's id",
+                    "example": "789c4f72-cf60-457e-98bd-93fe85109121"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PricesResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "title",
+            "example": "Разова консультація"
+          },
+          "price": {
+            "type": "string",
+            "description": "price",
+            "example": "590"
+          },
+          "online": {
+            "type": "string",
+            "description": "online",
+            "example": "Онлайн відео консультація"
+          },
+          "period": {
+            "type": "string",
+            "description": "period",
+            "example": "1 година"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "Покрокова інструкція подальших кроків по результату консультації"
+          }
+        }
+      },
+      "ReviewsResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "user name on site",
+            "example": "Hanna"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "user's avatar",
+            "example": "http://www.gravatar.com/avatar/017a475b41e86a455f4adbf7bb026f03?s=100&r=x&d=monsterid"
+          },
+          "date": {
+            "type": "string",
+            "description": "date of review",
+            "example": "Wed Sep 21 2022 12:04:31 GMT+0000 (Coordinated Universal Time)"
+          },
+          "review": {
+            "type": "string",
+            "description": "user's review",
+            "example": "Доброго вечора! Олесю, дякую за консультацію! Давно хотіла з Вами поділитись, 6 місяців повного гв без допаювання водичкою, сумішів та прикорму і це з повною занятістюl."
+          },
+          "isApprove": {
+            "type": "boolean",
+            "description": "admin's approved review",
+            "example": false
+          }
+        }
+      },
+      "AddReviewRequest": {
+        "required": ["user", "avatarURL", "review"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Hanna"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "Avatar URL",
+            "example": "http://www.gravatar.com/avatar/017a475b41e86a455f4adbf7bb026f03?s=100&r=x&d=monsterid"
+          },
+          "review": {
+            "type": "string",
+            "description": "User's review",
+            "example": "Біль…він додає певного забарвлення життю, він пронизує, він віддає наче в самісенький мозок і змінює нашу зовнішність. Перше фото є тому гарним підтвердженням. Хочу зберегти ці спогади і від усього сердечка подякувати тобі, Олесечка @olesia.foremna за твій професіоналізм, ніжність і любов до своєї справи. Завдяки тобі я навчилась годувати, отримуючи радість 🥰"
+          }
+        }
+      },
+      "ApproveResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "user name on site",
+            "example": "Hanna"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "user's avatar",
+            "example": "http://www.gravatar.com/avatar/017a475b41e86a455f4adbf7bb026f03?s=100&r=x&d=monsterid"
+          },
+          "date": {
+            "type": "string",
+            "description": "date of review",
+            "example": "Wed Sep 21 2022 12:04:31 GMT+0000 (Coordinated Universal Time)"
+          },
+          "review": {
+            "type": "string",
+            "description": "user's review",
+            "example": "Доброго вечора! Олесю, дякую за консультацію! Давно хотіла з Вами поділитись, 6 місяців повного гв без допаювання водичкою, сумішів та прикорму і це з повною занятістю."
+          },
+          "isApprove": {
+            "type": "boolean",
+            "description": "admin's approved review",
+            "example": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
