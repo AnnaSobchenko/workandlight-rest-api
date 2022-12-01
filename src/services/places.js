@@ -8,6 +8,7 @@ const getAllPlaces = async () => {
       _id: 1,
       online: 1,
       street: 1,
+      city:1,
       description: 1,
       area: 1,
       tables: 1,
