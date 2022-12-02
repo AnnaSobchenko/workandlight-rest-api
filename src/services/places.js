@@ -6,7 +6,6 @@ const getAllPlaces = async () => {
     {
       name: 1,
       _id: 1,
-      online: 1,
       street: 1,
       city:1,
       description: 1,
@@ -17,6 +16,7 @@ const getAllPlaces = async () => {
       location: 1,
       type: 1,
       worktime: 1,
+      option:1
     }
   );
   return result;
