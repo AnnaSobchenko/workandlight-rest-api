@@ -27,15 +27,15 @@ const pricesSchema = new mongoose.Schema({
   },
   location: {
     lat: {
-      type: String,
+      type: Number,
     },
     lng: {
-      type: String,
+      type: Number,
     },
   },
   option: {
-    wifi: { type: String },
-    charge: { type: String },
+    wifi: { type: Boolean },
+    charge: { type:Boolean},
   },  
   type: {
     type: String,
