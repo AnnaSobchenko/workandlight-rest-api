@@ -8,22 +8,20 @@ const {
   refreshTokenControl,
 } = require("../../controllers/users");
 const {
-  catchLogErrors,
-  catchSignupErrors,
+  // catchLogErrors,
+  // catchSignupErrors,
   catchErrors,
-} = require("../../middlewares/catchErrors");
+} = require("../../middlewares/catch-errors");
 
 const router = express.Router();
 
 router.post(
   "/signup",
-  schemas.postAuthValidation,
-  catchSignupErrors(signupUserControl)
+  catchErrors(signupUserControl)
 );
 router.post(
   "/login",
-  schemas.postAuthValidation,
-  catchLogErrors(signinUserControl)
+  catchErrors(signinUserControl)
 );
 router.post("/logout", authorize, catchErrors(logoutUserControl));
 router.get("/current", authorize, catchErrors(currentUserControl));
